@@ -66,8 +66,28 @@
             <p id="detail-location"></p>
             <p class="placement-note" id="detail-placement"></p>
             <div class="point-focus" id="point-focus" hidden>
-              <select id="focus-side" aria-label="移到穴位的側別" hidden></select>
+              <select id="focus-side" aria-label="穴位側別" hidden></select>
               <button type="button" id="focus-point">移到穴位</button>
+            </div>
+            <label class="toggle review-toggle" id="review-toggle" hidden>
+              <input type="checkbox" id="review-enabled"> 簡易校對模式
+            </label>
+            <div id="review-controls" hidden>
+              <p class="muted">點皮膚重新放置，或用方向按鈕沿畫面微調。</p>
+              <div class="review-nudges" aria-label="沿畫面微調穴位">
+                <button type="button" data-nudge="-1,0" aria-label="往左微調">左</button>
+                <button type="button" data-nudge="0,1" aria-label="往上微調">上</button>
+                <button type="button" data-nudge="0,-1" aria-label="往下微調">下</button>
+                <button type="button" data-nudge="1,0" aria-label="往右微調">右</button>
+              </div>
+              <label for="review-note">參考地標或備註</label>
+              <textarea id="review-note" rows="2" maxlength="500"></textarea>
+              <div class="point-focus">
+                <button type="button" id="review-save">儲存備註</button>
+                <button type="button" id="review-reset">還原此點</button>
+              </div>
+              <button type="button" id="review-export">匯出校對 JSON</button>
+              <p class="muted" id="review-status" role="status"></p>
             </div>
             <a id="detail-source" target="_blank" rel="noopener noreferrer"></a>
           </div>

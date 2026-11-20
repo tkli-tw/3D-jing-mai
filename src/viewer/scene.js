@@ -134,7 +134,29 @@ export function createScene(container) {
     controls.enabled = true;
   }
 
-  function enablePicking({ getTargets, getOccluder, onPick, getLineTargets, onHover, onLinePick }) {
+  function surfacePoint(raycaster) {
+    if (!orbitSurface?.visible) return;
+    orbitSurface.updateWorldMatrix(true, true);
+    const hit = raycaster.intersectObject(orbitSurface)[0];
+    if (!hit?.face) return;
+    const normal = hit.face.normal.clone().transformDirection(hit.object.matrixWorld);
+    return hit.point.addScaledVector(normal, 0.0016);
+  }
+
+  function nudgeOnSkin(point, x, y) {
+    camera.updateMatrixWorld();
+    const projected = point.clone().project(camera);
+    if (Math.abs(projected.x) >= 1 || Math.abs(projected.y) >= 1 || Math.abs(projected.z) >= 1) return;
+    const { clientWidth, clientHeight } = container;
+    if (!clientWidth || !clientHeight) return;
+    const pointer = new Vector2(projected.x + 6 * x / clientWidth, projected.y + 6 * y / clientHeight);
+    const ray = new Raycaster();
+    ray.setFromCamera(pointer, camera);
+    const next = surfacePoint(ray);
+    if (next && next.distanceToSquared(point) < 0.035 ** 2) return next;
+  }
+
+  function enablePicking({ getTargets, getOccluder, onPick, getLineTargets, onHover, onLinePick, onSurfacePick }) {
     const canvas = renderer.domElement;
     const raycaster = new Raycaster();
     const pointer = new Vector2();
@@ -198,6 +220,7 @@ export function createScene(container) {
       if (drift > 5) return;
 
       const size = setRay(event);
+      if (onSurfacePick(() => surfacePoint(raycaster))) return;
       const hit = raycaster.intersectObjects(getTargets(), false)[0];
       if (hit && hit.distance <= skinDistance()) {
         onPick(hit.object.userData);
@@ -208,5 +231,5 @@ export function createScene(container) {
     });
   }
 
-  return { showModel, setView, focusPoint, render, enablePicking };
+  return { showModel, setView, focusPoint, nudgeOnSkin, render, enablePicking };
 }

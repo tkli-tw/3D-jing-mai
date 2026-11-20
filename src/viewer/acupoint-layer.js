@@ -30,7 +30,7 @@ export function createAcupointLayer(placements, color) {
     mesh.position.fromArray(position);
     mesh.userData = { id, side };
     group.add(mesh);
-    return { mesh, label: null, id, side };
+    return { mesh, label: null, id, side, position };
   });
 
   function addLabel({ id, side, mesh }) {
@@ -51,6 +51,13 @@ export function createAcupointLayer(placements, color) {
   function update({ side, showPoints, showLabels, selection, channelColor, channelSelected }) {
     normalMaterial.color.set(channelColor);
     for (const marker of markers) {
+      const [x, y, z] = marker.position;
+      const current = marker.mesh.position;
+      if (current.x !== x || current.y !== y || current.z !== z) {
+        marker.label?.position.sub(current);
+        current.set(x, y, z);
+        marker.label?.position.add(current);
+      }
       const sideVisible = matchesSide(side, marker.side);
       const selected = selection?.id === marker.id && (!selection.side || selection.side === marker.side);
       marker.mesh.visible = sideVisible && showPoints;

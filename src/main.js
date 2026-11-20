@@ -3,6 +3,7 @@ import { Vector3 } from 'three';
 import { createScene } from './viewer/scene.js';
 import { loadBodyModel } from './viewer/body-model.js';
 import { loadMeridians } from './data/loader.js';
+import { createPointCorrections } from './data/point-corrections.js';
 import { createAcupointLayer } from './viewer/acupoint-layer.js';
 import { createMeridianLayer } from './viewer/meridian-layer.js';
 import { setupMeridianPanel } from './ui/meridian-panel.js';
@@ -44,6 +45,7 @@ async function start() {
 
     try {
       const channels = loadMeridians(body.id);
+      const corrections = createPointCorrections(body.id, channels);
       const layers = channels.filter(({ placements, paths }) => placements.length || paths.length)
         .map(({ meridian, placements, paths }) => {
           const points = createAcupointLayer(placements, meridian.color);
@@ -61,8 +63,16 @@ async function start() {
           path.update({ side: state.side, showPath: visible && state.showPath, lineColor: channelColor });
         }
         viewer.render();
-      }, (position) => {
-        viewer.focusPoint(body.model.localToWorld(new Vector3().fromArray(position)));
+      }, {
+        corrections,
+        focusPoint(position) {
+          viewer.focusPoint(body.model.localToWorld(new Vector3().fromArray(position)));
+        },
+        nudge(position, x, y) {
+          const worldPoint = body.model.localToWorld(new Vector3().fromArray(position));
+          const next = viewer.nudgeOnSkin(worldPoint, x, y);
+          return next && body.model.worldToLocal(next).toArray();
+        },
       });
       viewer.enablePicking({
         getTargets: () => layers.flatMap(({ points }) => points.group.visible ? points.getTargets() : []),
@@ -71,6 +81,10 @@ async function start() {
         getLineTargets: () => layers.flatMap(({ path }) => path.getTargets()),
         onHover: (line) => panel.highlight(line.parent.userData.meridianId),
         onLinePick: (line) => panel.selectChannel(line.parent.userData.meridianId),
+        onSurfacePick: (getPoint) => panel.handleSurfacePick(() => {
+          const point = getPoint();
+          return point && body.model.worldToLocal(point).toArray();
+        }),
       });
     } catch (error) {
       document.querySelector('#meridian-error').hidden = false;

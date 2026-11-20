@@ -125,6 +125,19 @@ input[type="search"] { width: min(100%, 16rem); }
 .location-caption { font-size: .875rem; }
 .point-focus { display: flex; gap: .4rem; margin: .75rem 0; }
 .point-focus[hidden] { display: none; }
+.review-toggle { margin: .75rem 0; }
+.review-toggle[hidden] { display: none; }
+.review-nudges { display: flex; gap: .3rem; margin: .5rem 0; }
+#review-note {
+  width: 100%;
+  margin-top: .35rem;
+  padding: .4rem;
+  border: 1px solid #526e77;
+  border-radius: .4rem;
+  background: #0f1c23;
+  color: inherit;
+  font: inherit;
+}
 .muted { color: #bbced2; }
 .placement-note { color: #ffdb9b; }
 

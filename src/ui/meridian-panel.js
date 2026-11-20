@@ -1,4 +1,5 @@
 import { matchesSide } from '../data/sides.js';
+import { setupPointReview } from './point-review.js';
 
 const get = (id) => document.getElementById(id);
 const sideLabels = { left: '左側', right: '右側', both: '雙側', all: '雙側', midline: '中線' };
@@ -20,7 +21,7 @@ function swatch(color) {
   return dot;
 }
 
-export function setupMeridianPanel(channels, onChange, onFocusPoint) {
+export function setupMeridianPanel(channels, onChange, { focusPoint, corrections, nudge }) {
   const search = get('point-search');
   const list = get('point-results');
   const side = get('point-side');
@@ -35,6 +36,21 @@ export function setupMeridianPanel(channels, onChange, onFocusPoint) {
   let selection;
   let hoveredChannel;
   let selectedChannel;
+  const review = setupPointReview({
+    corrections, getTarget, nudge,
+    onChange() {
+      const target = getTarget();
+      if (!matchesSide(side.value, target.side)) side.value = target.side;
+      select(target);
+    },
+  });
+
+  function getTarget() {
+    if (!selection) return;
+    const chosenSide = focusSide.value;
+    const position = buttons.get(selection.id).positions.get(chosenSide);
+    if (position) return { id: selection.id, side: chosenSide, position };
+  }
 
   function compatibleSide(meridian) {
     return meridian.sides === 'midline' ? matchesSide(side.value, 'midline') : side.value !== 'midline';
@@ -72,6 +88,7 @@ export function setupMeridianPanel(channels, onChange, onFocusPoint) {
       dot.style.setProperty('--channel-color', channelColors.get(meridian.id));
     }
     get('point-empty').hidden = matches > 0;
+    review.refresh();
     onChange({
       activeChannels,
       channelColors,
@@ -167,6 +184,7 @@ export function setupMeridianPanel(channels, onChange, onFocusPoint) {
     }
   }
   search.addEventListener('input', update);
+  focusSide.addEventListener('change', review.refresh);
   get('focus-point').addEventListener('click', () => {
     if (!selection) return;
     const focus = focusSide.value;
@@ -174,7 +192,7 @@ export function setupMeridianPanel(channels, onChange, onFocusPoint) {
     if (!position) return;
     if (!matchesSide(side.value, focus)) side.value = focus;
     select({ id: selection.id, side: focus });
-    onFocusPoint(position);
+    focusPoint(position);
   });
   allChannels.addEventListener('change', () => {
     for (const { checkbox } of channelOptions.values()) checkbox.checked = allChannels.checked;
@@ -198,5 +216,5 @@ export function setupMeridianPanel(channels, onChange, onFocusPoint) {
   get('meridian-settings').disabled = false;
   get('point-settings').disabled = false;
   update();
-  return { select, highlight, selectChannel };
+  return { select, highlight, selectChannel, handleSurfacePick: review.handleSurfacePick };
 }

@@ -51,7 +51,8 @@ export function loadMeridians(modelId) {
       indexSource: catalog.index_source,
       locationSource: catalog.sources[meridian.id] ?? catalog.location_standard,
       unavailable: placements.unavailable ?? {},
-      placements: placements.points.filter((point) => pointsById.get(point.point_id).meridian === meridian.id),
+      placements: placements.points.filter((point) => pointsById.get(point.point_id).meridian === meridian.id)
+        .map((point) => ({ ...point, position: [...point.position] })),
     };
   });
   if (channels.reduce((sum, channel) => sum + channel.points.length, 0) !== catalog.points.length) {
