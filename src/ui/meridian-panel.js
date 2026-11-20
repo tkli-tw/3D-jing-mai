@@ -20,7 +20,7 @@ function swatch(color) {
   return dot;
 }
 
-export function setupMeridianPanel(channels, onChange) {
+export function setupMeridianPanel(channels, onChange, onFocusPoint) {
   const search = get('point-search');
   const list = get('point-results');
   const side = get('point-side');
@@ -29,6 +29,7 @@ export function setupMeridianPanel(channels, onChange) {
   const showPath = get('show-path');
   const showPoints = get('show-points');
   const showLabels = get('show-labels');
+  const focusSide = get('focus-side');
   const buttons = new Map();
   const channelOptions = new Map();
   let selection;
@@ -99,7 +100,7 @@ export function setupMeridianPanel(channels, onChange) {
   function select({ id, side: pickedSide }) {
     const entry = buttons.get(id);
     if (!entry) return;
-    const { point, meridian, source, placedSides, unavailableReason } = entry;
+    const { point, meridian, source, positions, unavailableReason } = entry;
     const displaySide = meridian.sides === 'midline' ? 'midline' : pickedSide ?? side.value;
     selection = { id, side: pickedSide };
     get('details-empty').hidden = true;
@@ -107,8 +108,14 @@ export function setupMeridianPanel(channels, onChange) {
     get('detail-name').textContent = `${id} · ${point.name_zh_tw}`;
     get('detail-meta').textContent = `${point.pinyin} · ${meridian.name_zh_tw} · ${sideLabels[displaySide]}`;
     get('detail-location').textContent = point.location_text ?? '定位說明待整理。';
-    get('detail-placement').textContent = placedSides.some((placedSide) => matchesSide(displaySide, placedSide))
+    get('detail-placement').textContent = [...positions.keys()].some((placedSide) => matchesSide(displaySide, placedSide))
       ? '模型位置為示意，待校對。' : unavailableReason ?? '尚未在目前的 3D 模型定位。';
+    get('point-focus').hidden = positions.size === 0;
+    focusSide.hidden = positions.size < 2;
+    focusSide.replaceChildren(...['left', 'right', 'midline']
+      .filter((placedSide) => positions.has(placedSide))
+      .map((placedSide) => new Option(sideLabels[placedSide], placedSide)));
+    if (positions.has(displaySide)) focusSide.value = displaySide;
     get('detail-source').href = source.url;
     get('detail-source').textContent = source.title;
     update();
@@ -152,13 +159,23 @@ export function setupMeridianPanel(channels, onChange) {
       item.append(button);
       list.append(item);
       const terms = normalize([point.id, point.name_zh_tw, point.pinyin, ...(point.aliases ?? [])].join(' '));
-      const placedSides = placements.filter(({ point_id }) => point_id === point.id).map(({ side }) => side);
+      const positions = new Map(placements.filter(({ point_id }) => point_id === point.id)
+        .map(({ side, position }) => [side, position]));
       const source = point.location_text ? locationSource ?? indexSource : indexSource;
-      buttons.set(point.id, { item, button, dot, point, meridian, source, placedSides, terms,
+      buttons.set(point.id, { item, button, dot, point, meridian, source, positions, terms,
         unavailableReason: unavailable[point.id] });
     }
   }
   search.addEventListener('input', update);
+  get('focus-point').addEventListener('click', () => {
+    if (!selection) return;
+    const focus = focusSide.value;
+    const position = buttons.get(selection.id).positions.get(focus);
+    if (!position) return;
+    if (!matchesSide(side.value, focus)) side.value = focus;
+    select({ id: selection.id, side: focus });
+    onFocusPoint(position);
+  });
   allChannels.addEventListener('change', () => {
     for (const { checkbox } of channelOptions.values()) checkbox.checked = allChannels.checked;
     update();

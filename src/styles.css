@@ -122,6 +122,9 @@ input[type="search"] { width: min(100%, 16rem); }
 .details h2 { margin-top: 0; }
 .details p { margin: .5rem 0; }
 .detail-heading { font-size: 1.35rem; font-weight: 700; }
+.location-caption { font-size: .875rem; }
+.point-focus { display: flex; gap: .4rem; margin: .75rem 0; }
+.point-focus[hidden] { display: none; }
 .muted { color: #bbced2; }
 .placement-note { color: #ffdb9b; }
 

@@ -1,4 +1,5 @@
 import './styles.css';
+import { Vector3 } from 'three';
 import { createScene } from './viewer/scene.js';
 import { loadBodyModel } from './viewer/body-model.js';
 import { loadMeridians } from './data/loader.js';
@@ -24,7 +25,7 @@ async function start() {
 
   try {
     const body = await loadBodyModel();
-    viewer.showModel(body.model, body.bounds);
+    viewer.showModel(body.model, body.bounds, body.skin);
 
     function updateSkin() {
       percentage.value = `${transparency.value}%`;
@@ -60,6 +61,8 @@ async function start() {
           path.update({ side: state.side, showPath: visible && state.showPath, lineColor: channelColor });
         }
         viewer.render();
+      }, (position) => {
+        viewer.focusPoint(body.model.localToWorld(new Vector3().fromArray(position)));
       });
       viewer.enablePicking({
         getTargets: () => layers.flatMap(({ points }) => points.group.visible ? points.getTargets() : []),

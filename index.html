@@ -62,8 +62,13 @@
           <div id="point-details" hidden>
             <p class="detail-heading" id="detail-name"></p>
             <p class="muted" id="detail-meta"></p>
+            <p class="muted location-caption">穴位位置摘要 · 待校對</p>
             <p id="detail-location"></p>
             <p class="placement-note" id="detail-placement"></p>
+            <div class="point-focus" id="point-focus" hidden>
+              <select id="focus-side" aria-label="移到穴位的側別" hidden></select>
+              <button type="button" id="focus-point">移到穴位</button>
+            </div>
             <a id="detail-source" target="_blank" rel="noopener noreferrer"></a>
           </div>
         </section>
@@ -100,5 +105,6 @@
         <a href="./jic-coordinate-license.txt">座標資料授權</a></p>
     </footer>
     <script type="module" src="/src/main.js"></script>
+    <script type="module" src="/src/focus-smoke.js"></script>
   </body>
 </html>

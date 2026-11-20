@@ -22,7 +22,28 @@ export function createScene(container) {
 
   let frame;
   let bodySphere;
+  let orbitSurface;
   let currentPreset;
+  let focusedTarget;
+  const centerRay = new Raycaster();
+  const viewportCenter = new Vector2();
+
+  renderer.domElement.addEventListener('pointerdown', (event) => {
+    if (!orbitSurface || !event.isPrimary || event.button !== 0 ||
+        event.ctrlKey || event.metaKey || event.shiftKey) return;
+    if (focusedTarget && focusedTarget.distanceToSquared(controls.target) < 1e-10) return;
+    focusedTarget = undefined;
+
+    orbitSurface.updateWorldMatrix(true, true);
+    camera.updateMatrixWorld();
+    centerRay.setFromCamera(viewportCenter, camera);
+    const hit = centerRay.intersectObject(orbitSurface)[0];
+    if (!hit) return;
+
+    // Changing only the depth of the target keeps the current framing intact.
+    const distance = MathUtils.clamp(hit.distance, controls.minDistance, controls.maxDistance);
+    centerRay.ray.at(distance, controls.target);
+  }, { capture: true });
 
   function render() {
     if (frame !== undefined) return;
@@ -33,21 +54,59 @@ export function createScene(container) {
     });
   }
 
-  function setView(view) {
-    if (!bodySphere) return;
+  function limitingHalfAngle() {
     const halfHeight = MathUtils.degToRad(camera.fov / 2);
     const halfWidth = Math.atan(Math.tan(halfHeight) * camera.aspect);
-    const distance = bodySphere.radius * 1.08 / Math.sin(Math.min(halfHeight, halfWidth));
-    const direction = new Vector3(view === 'reset' ? 0.18 : 0, 0, view === 'back' ? -1 : 1);
-    // Clear OrbitControls' remaining inertia before assigning the preset.
+    return Math.min(halfHeight, halfWidth);
+  }
+
+  function aimCamera(target, direction, distance) {
+    // Clear OrbitControls' remaining inertia before replacing the framing.
     controls.enableDamping = false;
     controls.update();
-    controls.target.copy(bodySphere.center);
-    camera.position.copy(bodySphere.center).addScaledVector(direction.normalize(), distance);
+    controls.target.copy(target);
+    camera.position.copy(target).addScaledVector(direction, distance);
     controls.update();
     controls.enableDamping = true;
-    currentPreset = view;
     render();
+  }
+
+  function setView(view) {
+    if (!bodySphere) return;
+    const distance = bodySphere.radius * 1.08 / Math.sin(limitingHalfAngle());
+    const direction = new Vector3(view === 'reset' ? 0.18 : 0, 0, view === 'back' ? -1 : 1).normalize();
+    focusedTarget = undefined;
+    currentPreset = view;
+    aimCamera(bodySphere.center, direction, distance);
+  }
+
+  function focusPoint(point) {
+    const distance = MathUtils.clamp(0.15 / Math.tan(limitingHalfAngle()), controls.minDistance, controls.maxDistance);
+    const currentDirection = camera.getWorldDirection(new Vector3()).negate();
+    const alternatives = [new Vector3(0, 1, 0), new Vector3(0, -1, 0)];
+    for (const height of [-0.5, 0, 0.5]) {
+      for (let index = 0; index < 8; index++) {
+        const angle = index * Math.PI / 4;
+        alternatives.push(new Vector3(Math.sin(angle), height, Math.cos(angle)).normalize());
+      }
+    }
+    alternatives.sort((a, b) => b.dot(currentDirection) - a.dot(currentDirection));
+    const ray = new Raycaster(undefined, undefined, 0, distance - 0.003);
+    const origin = new Vector3();
+    const inward = new Vector3();
+    orbitSurface.updateWorldMatrix(true, true);
+    const direction = [currentDirection, ...alternatives].find((candidate) => {
+      ray.set(origin.copy(point).addScaledVector(candidate, distance), inward.copy(candidate).negate());
+      if (ray.intersectObject(orbitSurface).length) return false;
+      // A reverse ray also catches surfaces when the candidate camera starts inside the mesh.
+      ray.set(origin.copy(point).addScaledVector(candidate, 0.003), candidate);
+      return ray.intersectObject(orbitSurface).length === 0;
+    }) ?? currentDirection;
+
+    currentPreset = undefined;
+    focusedTarget = point.clone();
+    aimCamera(point, direction, distance);
+    container.scrollIntoView({ block: 'nearest', inline: 'nearest' });
   }
 
   function resize() {
@@ -65,8 +124,10 @@ export function createScene(container) {
   new ResizeObserver(resize).observe(container);
   resize();
 
-  function showModel(model, bounds) {
+  function showModel(model, bounds, skin) {
     scene.add(model);
+    orbitSurface = skin;
+    renderer.domElement.testView = { camera, controls, skin };
     bodySphere = bounds.getBoundingSphere(new Sphere());
     controls.minDistance = bodySphere.radius * 0.14;
     controls.maxDistance = 20;
@@ -148,5 +209,5 @@ export function createScene(container) {
     });
   }
 
-  return { showModel, setView, render, enablePicking };
+  return { showModel, setView, focusPoint, render, enablePicking };
 }

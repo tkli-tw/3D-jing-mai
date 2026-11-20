@@ -43,13 +43,13 @@ export function loadMeridians(modelId) {
       .sort((a, b) => Number(a.id.slice(2)) - Number(b.id.slice(2)));
     const paths = routes.paths.filter((path) => path.meridian === meridian.id);
     if (points.length !== meridian.point_count || points.some((point, index) =>
-      point.id !== `${meridian.id}${index + 1}` || !point.name_zh_tw || !point.pinyin)) {
+      point.id !== `${meridian.id}${index + 1}` || !point.name_zh_tw || !point.pinyin || !point.location_text?.trim())) {
       throw new Error(`${meridian.id} 的穴位目錄不完整。`);
     }
     return {
       meridian, points, paths,
       indexSource: catalog.index_source,
-      locationSource: catalog.sources[meridian.id],
+      locationSource: catalog.sources[meridian.id] ?? catalog.location_standard,
       unavailable: placements.unavailable ?? {},
       placements: placements.points.filter((point) => pointsById.get(point.point_id).meridian === meridian.id),
     };
