@@ -1,4 +1,5 @@
 import { BufferGeometry, Group, Line, LineBasicMaterial, Vector3 } from 'three';
+import { matchesSide } from '../data/sides.js';
 
 export function createMeridianLayer(paths, color) {
   const group = new Group();
@@ -13,7 +14,7 @@ export function createMeridianLayer(paths, color) {
   function update({ side, showPath, lineColor }) {
     group.visible = showPath;
     material.color.set(lineColor);
-    for (const line of group.children) line.visible = side === 'both' || side === line.userData.side;
+    for (const line of group.children) line.visible = matchesSide(side, line.userData.side);
   }
 
   return { group, update, getTargets: () => group.visible ? group.children.filter((line) => line.visible) : [] };

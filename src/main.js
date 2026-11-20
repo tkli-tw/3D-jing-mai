@@ -43,13 +43,14 @@ async function start() {
 
     try {
       const channels = loadMeridians(body.id);
-      const layers = channels.map(({ meridian, placements, paths }) => {
-        const points = createAcupointLayer(placements, meridian.color);
-        const path = createMeridianLayer(paths, meridian.color);
-        path.group.userData.meridianId = meridian.id;
-        body.model.add(points.group, path.group);
-        return { id: meridian.id, points, path };
-      });
+      const layers = channels.filter(({ placements, paths }) => placements.length || paths.length)
+        .map(({ meridian, placements, paths }) => {
+          const points = createAcupointLayer(placements, meridian.color);
+          const path = createMeridianLayer(paths, meridian.color);
+          path.group.userData.meridianId = meridian.id;
+          body.model.add(points.group, path.group);
+          return { id: meridian.id, points, path };
+        });
       const panel = setupMeridianPanel(channels, (state) => {
         for (const { id, points, path } of layers) {
           const visible = state.activeChannels.has(id);

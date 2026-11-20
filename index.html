@@ -16,6 +16,7 @@
           <legend>經脈設定</legend>
           <fieldset id="channel-options" class="channel-options">
             <legend>顯示經脈</legend>
+            <label class="toggle all-channels"><input id="all-channels" type="checkbox"> 全選經脈</label>
           </fieldset>
           <label class="color-control" for="line-color">經脈與穴位配色
             <select id="line-color">
@@ -25,9 +26,11 @@
           </label>
           <label class="side-control" for="point-side">人體側別
             <select id="point-side">
+              <option value="all">全部</option>
               <option value="both">雙側</option>
               <option value="left">左側</option>
               <option value="right">右側</option>
+              <option value="midline">中線</option>
             </select>
           </label>
           <label class="toggle"><input id="show-path" type="checkbox" checked> 顯示經脈線</label>
@@ -60,7 +63,7 @@
             <p class="detail-heading" id="detail-name"></p>
             <p class="muted" id="detail-meta"></p>
             <p id="detail-location"></p>
-            <p class="placement-note">模型位置為示意，待校對。</p>
+            <p class="placement-note" id="detail-placement"></p>
             <a id="detail-source" target="_blank" rel="noopener noreferrer"></a>
           </div>
         </section>
@@ -93,6 +96,8 @@
       <p>男性模型由 <a href="https://github.com/MervinR07/open-anatomy-3d">Open Anatomy 3D</a> 改編自
         <a href="https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/">BodyParts3D</a> © The Database Center for Life Science。
         模型採 <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>。</p>
+      <p>部分穴位示意位置改編自 <a href="https://github.com/JICio/tcm-3d">JIC tcm-3d</a>，並重新貼合本模型。
+        <a href="./jic-coordinate-license.txt">座標資料授權</a></p>
     </footer>
     <script type="module" src="/src/main.js"></script>
   </body>

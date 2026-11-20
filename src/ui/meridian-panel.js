@@ -1,5 +1,9 @@
+import { matchesSide } from '../data/sides.js';
+
 const get = (id) => document.getElementById(id);
-const sideLabels = { left: '左側', right: '右側', both: '雙側' };
+const sideLabels = { left: '左側', right: '右側', both: '雙側', all: '雙側', midline: '中線' };
+const codeAliases = { sj: 'te', tb: 'te', tw: 'te', du: 'gv', ren: 'cv', kd: 'ki', k: 'ki' };
+const defaultChannels = new Set(['LU', 'HT', 'PC']);
 const neutralColor = '#748288';
 const hoverColor = '#80bfc6';
 const selectedColor = '#ffd478';
@@ -21,6 +25,7 @@ export function setupMeridianPanel(channels, onChange) {
   const list = get('point-results');
   const side = get('point-side');
   const lineColor = get('line-color');
+  const allChannels = get('all-channels');
   const showPath = get('show-path');
   const showPoints = get('show-points');
   const showLabels = get('show-labels');
@@ -30,11 +35,17 @@ export function setupMeridianPanel(channels, onChange) {
   let hoveredChannel;
   let selectedChannel;
 
+  function compatibleSide(meridian) {
+    return meridian.sides === 'midline' ? matchesSide(side.value, 'midline') : side.value !== 'midline';
+  }
+
   function update() {
-    const query = normalize(search.value);
+    const query = normalize(search.value).replace(/^(sj|tb|tw|du|ren|kd|k)(?=\d)/, (alias) => codeAliases[alias]);
     const activeChannels = new Set(
       [...channelOptions].filter(([, { checkbox }]) => checkbox.checked).map(([id]) => id),
     );
+    allChannels.checked = activeChannels.size === channelOptions.size;
+    allChannels.indeterminate = activeChannels.size > 0 && !allChannels.checked;
     if (!activeChannels.has(hoveredChannel)) hoveredChannel = undefined;
     if (!activeChannels.has(selectedChannel)) selectedChannel = undefined;
     const channelColors = new Map();
@@ -46,14 +57,15 @@ export function setupMeridianPanel(channels, onChange) {
       button.setAttribute('aria-pressed', String(id === selectedChannel));
       dot.style.setProperty('--channel-color', currentColor);
     }
-    if (selection && !activeChannels.has(buttons.get(selection.id).meridian.id)) {
+    const selectedMeridian = selection && buttons.get(selection.id).meridian;
+    if (selectedMeridian && (!activeChannels.has(selectedMeridian.id) || !compatibleSide(selectedMeridian))) {
       selection = undefined;
       get('details-empty').hidden = false;
       get('point-details').hidden = true;
     }
     let matches = 0;
     for (const [id, { item, button, dot, terms, meridian }] of buttons) {
-      item.hidden = !activeChannels.has(meridian.id) || !terms.includes(query);
+      item.hidden = !activeChannels.has(meridian.id) || !compatibleSide(meridian) || !terms.includes(query);
       if (!item.hidden) matches++;
       button.setAttribute('aria-pressed', String(selection?.id === id));
       dot.style.setProperty('--channel-color', channelColors.get(meridian.id));
@@ -87,24 +99,27 @@ export function setupMeridianPanel(channels, onChange) {
   function select({ id, side: pickedSide }) {
     const entry = buttons.get(id);
     if (!entry) return;
-    const { point, meridian, source } = entry;
+    const { point, meridian, source, placedSides, unavailableReason } = entry;
+    const displaySide = meridian.sides === 'midline' ? 'midline' : pickedSide ?? side.value;
     selection = { id, side: pickedSide };
     get('details-empty').hidden = true;
     get('point-details').hidden = false;
     get('detail-name').textContent = `${id} · ${point.name_zh_tw}`;
-    get('detail-meta').textContent = `${point.pinyin} · ${meridian.name_zh_tw} · ${sideLabels[pickedSide ?? side.value]}`;
-    get('detail-location').textContent = point.location_text;
+    get('detail-meta').textContent = `${point.pinyin} · ${meridian.name_zh_tw} · ${sideLabels[displaySide]}`;
+    get('detail-location').textContent = point.location_text ?? '定位說明待整理。';
+    get('detail-placement').textContent = placedSides.some((placedSide) => matchesSide(displaySide, placedSide))
+      ? '模型位置為示意，待校對。' : unavailableReason ?? '尚未在目前的 3D 模型定位。';
     get('detail-source').href = source.url;
     get('detail-source').textContent = source.title;
     update();
   }
 
-  for (const { meridian, points, source } of channels) {
+  for (const { meridian, points, indexSource, locationSource, placements, paths, unavailable } of channels) {
     const row = document.createElement('div');
     row.className = 'toggle channel-row';
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
-    checkbox.checked = true;
+    checkbox.checked = defaultChannels.has(meridian.id);
     checkbox.value = meridian.id;
     checkbox.setAttribute('aria-label', `顯示${meridian.name_zh_tw}`);
     checkbox.addEventListener('change', update);
@@ -112,6 +127,12 @@ export function setupMeridianPanel(channels, onChange) {
     const button = document.createElement('button');
     button.type = 'button';
     button.append(dot, meridian.name_zh_tw);
+    if (!placements.length) {
+      const badge = document.createElement('span');
+      badge.className = 'catalog-only';
+      badge.textContent = paths.length ? '示意線' : '目錄';
+      button.append(badge);
+    }
     button.addEventListener('click', () => selectChannel(meridian.id));
     row.append(checkbox, button);
     row.addEventListener('pointerenter', (event) => {
@@ -130,11 +151,18 @@ export function setupMeridianPanel(channels, onChange) {
       button.addEventListener('click', () => select({ id: point.id }));
       item.append(button);
       list.append(item);
-      const terms = normalize(`${point.id} ${point.name_zh_tw} ${point.pinyin}`);
-      buttons.set(point.id, { item, button, dot, point, meridian, source, terms });
+      const terms = normalize([point.id, point.name_zh_tw, point.pinyin, ...(point.aliases ?? [])].join(' '));
+      const placedSides = placements.filter(({ point_id }) => point_id === point.id).map(({ side }) => side);
+      const source = point.location_text ? locationSource ?? indexSource : indexSource;
+      buttons.set(point.id, { item, button, dot, point, meridian, source, placedSides, terms,
+        unavailableReason: unavailable[point.id] });
     }
   }
   search.addEventListener('input', update);
+  allChannels.addEventListener('change', () => {
+    for (const { checkbox } of channelOptions.values()) checkbox.checked = allChannels.checked;
+    update();
+  });
   lineColor.addEventListener('change', update);
   search.addEventListener('keydown', (event) => {
     if (event.key === 'Enter' && !event.isComposing) {
@@ -142,8 +170,8 @@ export function setupMeridianPanel(channels, onChange) {
     }
   });
   side.addEventListener('change', () => {
-    if (selection) {
-      const pickedSide = side.value === 'both' ? selection.side : undefined;
+    if (selection && compatibleSide(buttons.get(selection.id).meridian)) {
+      const pickedSide = matchesSide(side.value, selection.side) ? selection.side : undefined;
       select({ id: selection.id, side: pickedSide });
     } else {
       update();
