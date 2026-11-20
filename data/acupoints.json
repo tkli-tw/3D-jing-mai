@@ -1,0 +1,48 @@
+{
+  "sources": {
+    "LU": {
+      "title": "世界針灸學會聯合會《經穴部位》第 3.1 節",
+      "url": "https://www.wfas.org.cn/a47122.html"
+    },
+    "PC": {
+      "title": "WHO 西太平洋區穴位定位標準 · 心包經",
+      "url": "https://iris.who.int/bitstream/handle/10665/353407/9789290613831-eng.pdf"
+    },
+    "HT": {
+      "title": "WHO 西太平洋區穴位定位標準 · 心經",
+      "url": "https://iris.who.int/bitstream/handle/10665/353407/9789290613831-eng.pdf"
+    }
+  },
+  "review_status": "unverified",
+  "points": [
+    { "id": "LU1", "name_zh_tw": "中府", "pinyin": "Zhōngfǔ", "meridian": "LU", "location_text": "上胸部靠外側，約在第一肋間高度。" },
+    { "id": "LU2", "name_zh_tw": "雲門", "pinyin": "Yúnmén", "meridian": "LU", "location_text": "上胸外側的鎖骨下方，位於中府上方。" },
+    { "id": "LU3", "name_zh_tw": "天府", "pinyin": "Tiānfǔ", "meridian": "LU", "location_text": "從腋前褶往下的上臂區域，沿肱二頭肌的拇指側邊緣。" },
+    { "id": "LU4", "name_zh_tw": "俠白", "pinyin": "Xiábái", "meridian": "LU", "location_text": "上臂肱二頭肌的拇指側邊緣，比天府更靠近手肘。" },
+    { "id": "LU5", "name_zh_tw": "尺澤", "pinyin": "Chǐzé", "meridian": "LU", "location_text": "手肘前側的橫紋處，靠肱二頭肌肌腱的拇指側。" },
+    { "id": "LU6", "name_zh_tw": "孔最", "pinyin": "Kǒngzuì", "meridian": "LU", "location_text": "前臂掌面偏拇指側，位於尺澤與太淵之間，較接近手肘。" },
+    { "id": "LU7", "name_zh_tw": "列缺", "pinyin": "Lièquē", "meridian": "LU", "location_text": "靠近手腕的前臂拇指側，位於橈骨莖突朝手肘的方向。" },
+    { "id": "LU8", "name_zh_tw": "經渠", "pinyin": "Jīngqú", "meridian": "LU", "location_text": "腕橫紋近端的前臂掌面，靠橈骨莖突與橈動脈之間。" },
+    { "id": "LU9", "name_zh_tw": "太淵", "pinyin": "Tàiyuān", "meridian": "LU", "location_text": "手腕掌側橫紋的拇指側端，鄰近橈動脈。" },
+    { "id": "LU10", "name_zh_tw": "魚際", "pinyin": "Yújì", "meridian": "LU", "location_text": "拇指根部的掌側，約在第一掌骨中段靠拇指側的掌背皮膚交界。" },
+    { "id": "LU11", "name_zh_tw": "少商", "pinyin": "Shàoshāng", "meridian": "LU", "location_text": "拇指末節外緣，接近拇指甲角。" },
+    { "id": "PC1", "name_zh_tw": "天池", "pinyin": "Tiānchí", "meridian": "PC", "location_text": "前胸第四肋間，接近乳頭外側。" },
+    { "id": "PC2", "name_zh_tw": "天泉", "pinyin": "Tiānquán", "meridian": "PC", "location_text": "腋前褶下方的上臂前面，位於肱二頭肌兩頭之間。" },
+    { "id": "PC3", "name_zh_tw": "曲澤", "pinyin": "Qūzé", "meridian": "PC", "location_text": "肘前橫紋處，在肱二頭肌肌腱靠小指的一側。" },
+    { "id": "PC4", "name_zh_tw": "郄門", "pinyin": "Xìmén", "meridian": "PC", "location_text": "前臂掌側中段，約在掌長肌腱與橈側屈腕肌腱之間的連線上。" },
+    { "id": "PC5", "name_zh_tw": "間使", "pinyin": "Jiānshǐ", "meridian": "PC", "location_text": "前臂掌側，沿掌長肌腱與橈側屈腕肌腱之間，比內關更靠近手肘。" },
+    { "id": "PC6", "name_zh_tw": "內關", "pinyin": "Nèiguān", "meridian": "PC", "location_text": "腕橫紋往手肘方向的前臂掌側，介於掌長肌腱與橈側屈腕肌腱之間。" },
+    { "id": "PC7", "name_zh_tw": "大陵", "pinyin": "Dàlíng", "meridian": "PC", "location_text": "手腕掌側橫紋上，介於掌長肌腱與橈側屈腕肌腱之間。" },
+    { "id": "PC8", "name_zh_tw": "勞宮", "pinyin": "Láogōng", "meridian": "PC", "location_text": "掌心，約在第二與第三掌骨之間，偏第三掌骨。" },
+    { "id": "PC9", "name_zh_tw": "中衝", "pinyin": "Zhōngchōng", "meridian": "PC", "location_text": "中指指尖中央。" },
+    { "id": "HT1", "name_zh_tw": "極泉", "pinyin": "Jíquán", "meridian": "HT", "location_text": "腋窩中央，鄰近腋動脈。" },
+    { "id": "HT2", "name_zh_tw": "青靈", "pinyin": "Qīnglíng", "meridian": "HT", "location_text": "上臂內側，位於少海往肩的方向，沿肱二頭肌內側。" },
+    { "id": "HT3", "name_zh_tw": "少海", "pinyin": "Shàohǎi", "meridian": "HT", "location_text": "肘前橫紋的內側端附近，靠近肱骨內上髁。" },
+    { "id": "HT4", "name_zh_tw": "靈道", "pinyin": "Língdào", "meridian": "HT", "location_text": "前臂掌側靠小指的一側，位於尺側屈腕肌腱的拇指側，較通里靠近手肘。" },
+    { "id": "HT5", "name_zh_tw": "通里", "pinyin": "Tōnglǐ", "meridian": "HT", "location_text": "手腕附近的前臂掌側，沿尺側屈腕肌腱的拇指側，位於靈道與陰郄之間。" },
+    { "id": "HT6", "name_zh_tw": "陰郄", "pinyin": "Yīnxì", "meridian": "HT", "location_text": "接近腕橫紋的前臂掌側，位於尺側屈腕肌腱的拇指側。" },
+    { "id": "HT7", "name_zh_tw": "神門", "pinyin": "Shénmén", "meridian": "HT", "location_text": "手腕掌側橫紋靠小指端，鄰近尺側屈腕肌腱的拇指側。" },
+    { "id": "HT8", "name_zh_tw": "少府", "pinyin": "Shàofǔ", "meridian": "HT", "location_text": "掌心靠小指側，約在第四與第五掌骨之間。" },
+    { "id": "HT9", "name_zh_tw": "少衝", "pinyin": "Shàochōng", "meridian": "HT", "location_text": "小指末節靠無名指的一側，接近小指甲角。" }
+  ]
+}

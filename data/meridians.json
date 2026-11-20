@@ -1,0 +1,5 @@
+[
+  { "id": "LU", "name_zh_tw": "手太陰肺經", "point_count": 11, "color": "#50e3d0" },
+  { "id": "PC", "name_zh_tw": "手厥陰心包經", "point_count": 9, "color": "#c4a3ff" },
+  { "id": "HT", "name_zh_tw": "手少陰心經", "point_count": 9, "color": "#ff8b94" }
+]

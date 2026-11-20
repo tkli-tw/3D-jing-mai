@@ -1,0 +1,298 @@
+{
+  "model_id": "open-anatomy-3d:0.1.0:male",
+  "coordinate_space": "model-local",
+  "placement_status": "illustrative",
+  "placement_source": "manual-guides-front-surface-projection",
+  "points": [
+    {
+      "point_id": "LU1",
+      "side": "left",
+      "position": [0.132, 1.338, 0.073957]
+    },
+    {
+      "point_id": "LU2",
+      "side": "left",
+      "position": [0.137, 1.377, 0.048467]
+    },
+    {
+      "point_id": "LU3",
+      "side": "left",
+      "position": [0.194, 1.247, 0.016596]
+    },
+    {
+      "point_id": "LU4",
+      "side": "left",
+      "position": [0.199, 1.222, 0.015999]
+    },
+    {
+      "point_id": "LU5",
+      "side": "left",
+      "position": [0.226, 1.124, 0.006161]
+    },
+    {
+      "point_id": "LU6",
+      "side": "left",
+      "position": [0.24, 1.028, 0.020589]
+    },
+    {
+      "point_id": "LU7",
+      "side": "left",
+      "position": [0.266, 0.923, 0.029807]
+    },
+    {
+      "point_id": "LU8",
+      "side": "left",
+      "position": [0.262, 0.907, 0.03412]
+    },
+    {
+      "point_id": "LU9",
+      "side": "left",
+      "position": [0.26, 0.891, 0.041394]
+    },
+    {
+      "point_id": "LU10",
+      "side": "left",
+      "position": [0.28, 0.863, 0.056965]
+    },
+    {
+      "point_id": "LU11",
+      "side": "left",
+      "position": [0.319, 0.815, 0.07757]
+    },
+    {
+      "point_id": "LU1",
+      "side": "right",
+      "position": [-0.132, 1.338, 0.073742]
+    },
+    {
+      "point_id": "LU2",
+      "side": "right",
+      "position": [-0.137, 1.377, 0.048357]
+    },
+    {
+      "point_id": "LU3",
+      "side": "right",
+      "position": [-0.194, 1.247, 0.01732]
+    },
+    {
+      "point_id": "LU4",
+      "side": "right",
+      "position": [-0.199, 1.222, 0.016092]
+    },
+    {
+      "point_id": "LU5",
+      "side": "right",
+      "position": [-0.226, 1.124, 0.006285]
+    },
+    {
+      "point_id": "LU6",
+      "side": "right",
+      "position": [-0.24, 1.028, 0.02061]
+    },
+    {
+      "point_id": "LU7",
+      "side": "right",
+      "position": [-0.266, 0.923, 0.029466]
+    },
+    {
+      "point_id": "LU8",
+      "side": "right",
+      "position": [-0.262, 0.907, 0.034489]
+    },
+    {
+      "point_id": "LU9",
+      "side": "right",
+      "position": [-0.26, 0.891, 0.040866]
+    },
+    {
+      "point_id": "LU10",
+      "side": "right",
+      "position": [-0.28, 0.863, 0.056901]
+    },
+    {
+      "point_id": "LU11",
+      "side": "right",
+      "position": [-0.319, 0.815, 0.077668]
+    },
+    {
+      "point_id": "PC1",
+      "side": "left",
+      "position": [0.133, 1.258, 0.087768]
+    },
+    {
+      "point_id": "PC2",
+      "side": "left",
+      "position": [0.186, 1.274, 0.01736]
+    },
+    {
+      "point_id": "PC3",
+      "side": "left",
+      "position": [0.208, 1.124, 0.005605]
+    },
+    {
+      "point_id": "PC4",
+      "side": "left",
+      "position": [0.233, 0.987, 0.026072]
+    },
+    {
+      "point_id": "PC5",
+      "side": "left",
+      "position": [0.24, 0.949, 0.029108]
+    },
+    {
+      "point_id": "PC6",
+      "side": "left",
+      "position": [0.244, 0.929, 0.032177]
+    },
+    {
+      "point_id": "PC7",
+      "side": "left",
+      "position": [0.249, 0.891, 0.040474]
+    },
+    {
+      "point_id": "PC8",
+      "side": "left",
+      "position": [0.274, 0.824, 0.051012]
+    },
+    {
+      "point_id": "PC9",
+      "side": "left",
+      "position": [0.279, 0.73, 0.107411]
+    },
+    {
+      "point_id": "PC1",
+      "side": "right",
+      "position": [-0.133, 1.258, 0.087642]
+    },
+    {
+      "point_id": "PC2",
+      "side": "right",
+      "position": [-0.186, 1.274, 0.017749]
+    },
+    {
+      "point_id": "PC3",
+      "side": "right",
+      "position": [-0.208, 1.124, 0.005581]
+    },
+    {
+      "point_id": "PC4",
+      "side": "right",
+      "position": [-0.233, 0.987, 0.025833]
+    },
+    {
+      "point_id": "PC5",
+      "side": "right",
+      "position": [-0.24, 0.949, 0.029311]
+    },
+    {
+      "point_id": "PC6",
+      "side": "right",
+      "position": [-0.244, 0.929, 0.031938]
+    },
+    {
+      "point_id": "PC7",
+      "side": "right",
+      "position": [-0.249, 0.891, 0.040496]
+    },
+    {
+      "point_id": "PC8",
+      "side": "right",
+      "position": [-0.274, 0.824, 0.050814]
+    },
+    {
+      "point_id": "PC9",
+      "side": "right",
+      "position": [-0.279, 0.73, 0.107525]
+    },
+    {
+      "point_id": "HT1",
+      "side": "left",
+      "position": [0.173, 1.315, 0.026971]
+    },
+    {
+      "point_id": "HT2",
+      "side": "left",
+      "position": [0.181, 1.203, 0.006379]
+    },
+    {
+      "point_id": "HT3",
+      "side": "left",
+      "position": [0.188, 1.124, -0.000852]
+    },
+    {
+      "point_id": "HT4",
+      "side": "left",
+      "position": [0.226, 0.921, 0.023814]
+    },
+    {
+      "point_id": "HT5",
+      "side": "left",
+      "position": [0.23, 0.91, 0.02861]
+    },
+    {
+      "point_id": "HT6",
+      "side": "left",
+      "position": [0.232, 0.902, 0.031594]
+    },
+    {
+      "point_id": "HT7",
+      "side": "left",
+      "position": [0.235, 0.891, 0.035743]
+    },
+    {
+      "point_id": "HT8",
+      "side": "left",
+      "position": [0.238, 0.823, 0.055272]
+    },
+    {
+      "point_id": "HT9",
+      "side": "left",
+      "position": [0.224, 0.756, 0.092227]
+    },
+    {
+      "point_id": "HT1",
+      "side": "right",
+      "position": [-0.173, 1.315, 0.026788]
+    },
+    {
+      "point_id": "HT2",
+      "side": "right",
+      "position": [-0.181, 1.203, 0.006156]
+    },
+    {
+      "point_id": "HT3",
+      "side": "right",
+      "position": [-0.188, 1.124, -0.000652]
+    },
+    {
+      "point_id": "HT4",
+      "side": "right",
+      "position": [-0.226, 0.921, 0.023724]
+    },
+    {
+      "point_id": "HT5",
+      "side": "right",
+      "position": [-0.23, 0.91, 0.028286]
+    },
+    {
+      "point_id": "HT6",
+      "side": "right",
+      "position": [-0.232, 0.902, 0.031443]
+    },
+    {
+      "point_id": "HT7",
+      "side": "right",
+      "position": [-0.235, 0.891, 0.035613]
+    },
+    {
+      "point_id": "HT8",
+      "side": "right",
+      "position": [-0.238, 0.823, 0.055446]
+    },
+    {
+      "point_id": "HT9",
+      "side": "right",
+      "position": [-0.224, 0.756, 0.092671]
+    }
+  ]
+}

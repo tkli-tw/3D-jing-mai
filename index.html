@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>經脈圖譜 · 3D 人體檢視器</title>
+  </head>
+  <body>
+    <header class="page-header">
+      <span class="brand">經脈圖譜</span>
+      <h1>3D 人體檢視器</h1>
+    </header>
+    <main class="workspace">
+      <aside class="settings catalog" aria-label="經脈設定">
+        <fieldset id="meridian-settings" disabled>
+          <legend>經脈設定</legend>
+          <fieldset id="channel-options" class="channel-options">
+            <legend>顯示經脈</legend>
+          </fieldset>
+          <label class="color-control" for="line-color">經脈與穴位配色
+            <select id="line-color">
+              <option value="focus">低彩同色</option>
+              <option value="distinct">各經脈分色</option>
+            </select>
+          </label>
+          <label class="side-control" for="point-side">人體側別
+            <select id="point-side">
+              <option value="both">雙側</option>
+              <option value="left">左側</option>
+              <option value="right">右側</option>
+            </select>
+          </label>
+          <label class="toggle"><input id="show-path" type="checkbox" checked> 顯示經脈線</label>
+          <label class="toggle"><input id="show-points" type="checkbox" checked> 顯示穴位</label>
+          <label class="toggle"><input id="show-labels" type="checkbox"> 顯示代碼標籤</label>
+        </fieldset>
+        <p id="meridian-error" role="status" hidden>經脈資料載入失敗。仍可操作人體模型。</p>
+      </aside>
+      <div class="viewer-column">
+        <section class="settings point-picker" aria-label="穴位選擇">
+          <fieldset id="point-settings" disabled>
+            <div class="point-search">
+              <label for="point-search">搜尋穴位</label>
+              <input id="point-search" type="search" placeholder="穴名、代碼或拼音" autocomplete="off">
+            </div>
+            <ul id="point-results" class="point-results" aria-label="穴位搜尋結果"></ul>
+            <p id="point-empty" role="status" hidden>沒有符合的穴位。</p>
+          </fieldset>
+        </section>
+        <section class="viewport" aria-label="3D 人體模型">
+          <div id="stage"></div>
+          <p class="status" id="status" role="status">正在載入人體模型…</p>
+        </section>
+      </div>
+      <aside class="settings" aria-label="檢視設定">
+        <section class="details" aria-labelledby="details-title" aria-live="polite">
+          <h2 id="details-title">穴位資訊</h2>
+          <p class="muted" id="details-empty">從清單或模型選取穴位。</p>
+          <div id="point-details" hidden>
+            <p class="detail-heading" id="detail-name"></p>
+            <p class="muted" id="detail-meta"></p>
+            <p id="detail-location"></p>
+            <p class="placement-note">模型位置為示意，待校對。</p>
+            <a id="detail-source" target="_blank" rel="noopener noreferrer"></a>
+          </div>
+        </section>
+        <fieldset id="settings" disabled>
+          <legend>檢視設定</legend>
+          <h2>視角</h2>
+          <div class="views">
+            <button type="button" data-view="front">正面</button>
+            <button type="button" data-view="back">背面</button>
+            <button type="button" data-view="reset">回正</button>
+          </div>
+          <h2>人體外觀</h2>
+          <label class="toggle"><input id="skin-visible" type="checkbox" checked> 顯示皮膚</label>
+          <label class="slider-label" for="transparency">皮膚透明度 <output id="percentage" for="transparency">0%</output></label>
+          <input id="transparency" type="range" min="0" max="100" value="0">
+        </fieldset>
+        <div class="help">
+          <h2>操作方式</h2>
+          <dl>
+            <dt>旋轉</dt><dd>左鍵拖曳</dd>
+            <dt>平移</dt><dd>右鍵拖曳</dd>
+            <dt>縮放</dt><dd>滑鼠滾輪</dd>
+          </dl>
+          <p>觸控可用單指旋轉，雙指平移或縮放。</p>
+        </div>
+      </aside>
+    </main>
+    <footer>
+      <p>本圖譜供人體空間視覺化與學習使用。經脈線為傳統經脈的體表示意。</p>
+      <p>男性模型由 <a href="https://github.com/MervinR07/open-anatomy-3d">Open Anatomy 3D</a> 改編自
+        <a href="https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/">BodyParts3D</a> © The Database Center for Life Science。
+        模型採 <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>。</p>
+    </footer>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
