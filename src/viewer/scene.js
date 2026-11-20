@@ -127,7 +127,6 @@ export function createScene(container) {
   function showModel(model, bounds, skin) {
     scene.add(model);
     orbitSurface = skin;
-    renderer.domElement.testView = { camera, controls, skin };
     bodySphere = bounds.getBoundingSphere(new Sphere());
     controls.minDistance = bodySphere.radius * 0.14;
     controls.maxDistance = 20;
