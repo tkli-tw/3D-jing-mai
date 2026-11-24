@@ -123,6 +123,16 @@ input[type="search"] { width: min(100%, 16rem); }
 .details p { margin: .5rem 0; }
 .detail-heading { font-size: 1.35rem; font-weight: 700; }
 .location-caption { font-size: .875rem; }
+.detail-tabs { display: flex; gap: .3rem; margin: .75rem 0; }
+.detail-tabs button { padding: .35rem .15rem; font-size: .875rem; }
+.detail-tabs button[aria-selected="true"] {
+  border-color: #8edbcf;
+  background: #1d4147;
+  color: #e1faf5;
+}
+#panel-evidence h3, #panel-evidence h4 { margin: .75rem 0 .35rem; font-size: 1rem; }
+#panel-evidence section + section { border-top: 1px solid #344851; margin-top: .75rem; }
+#detail-traditional a { display: block; }
 .point-focus { display: flex; gap: .4rem; margin: .75rem 0; }
 .point-focus[hidden] { display: none; }
 .review-toggle { margin: .75rem 0; }

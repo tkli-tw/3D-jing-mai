@@ -1,17 +1,14 @@
 import { matchesSide } from '../data/sides.js';
 import { setupPointReview } from './point-review.js';
+import { setupPointDetails } from './point-details.js';
+import { indexPoint, parsePointQuery, scorePoint } from '../data/point-search.js';
 
 const get = (id) => document.getElementById(id);
 const sideLabels = { left: '左側', right: '右側', both: '雙側', all: '雙側', midline: '中線' };
-const codeAliases = { sj: 'te', tb: 'te', tw: 'te', du: 'gv', ren: 'cv', kd: 'ki', k: 'ki' };
 const defaultChannels = new Set(['LU', 'HT', 'PC']);
 const neutralColor = '#748288';
 const hoverColor = '#80bfc6';
 const selectedColor = '#ffd478';
-
-function normalize(text) {
-  return text.toLowerCase().normalize('NFD').replace(/[\p{M}\s-]/gu, '');
-}
 
 function swatch(color) {
   const dot = document.createElement('span');
@@ -36,6 +33,7 @@ export function setupMeridianPanel(channels, onChange, { focusPoint, corrections
   let selection;
   let hoveredChannel;
   let selectedChannel;
+  let previousQuery;
   const review = setupPointReview({
     corrections, getTarget, nudge,
     onChange() {
@@ -43,6 +41,9 @@ export function setupMeridianPanel(channels, onChange, { focusPoint, corrections
       if (!matchesSide(side.value, target.side)) side.value = target.side;
       select(target);
     },
+  });
+  const details = setupPointDetails((id) => {
+    if (id !== 'tab-review') review.deactivate();
   });
 
   function getTarget() {
@@ -57,7 +58,14 @@ export function setupMeridianPanel(channels, onChange, { focusPoint, corrections
   }
 
   function update() {
-    const query = normalize(search.value).replace(/^(sj|tb|tw|du|ren|kd|k)(?=\d)/, (alias) => codeAliases[alias]);
+    const query = parsePointQuery(search.value);
+    if (previousQuery !== search.value) {
+      const entries = [...buttons.values()];
+      for (const entry of entries) entry.score = scorePoint(entry.searchIndex, query);
+      entries.sort((a, b) => b.score - a.score);
+      list.append(...entries.map(({ item }) => item));
+      previousQuery = search.value;
+    }
     const activeChannels = new Set(
       [...channelOptions].filter(([, { checkbox }]) => checkbox.checked).map(([id]) => id),
     );
@@ -79,10 +87,11 @@ export function setupMeridianPanel(channels, onChange, { focusPoint, corrections
       selection = undefined;
       get('details-empty').hidden = false;
       get('point-details').hidden = true;
+      review.deactivate();
     }
     let matches = 0;
-    for (const [id, { item, button, dot, terms, meridian }] of buttons) {
-      item.hidden = !activeChannels.has(meridian.id) || !compatibleSide(meridian) || !terms.includes(query);
+    for (const [id, { item, button, dot, score, meridian }] of buttons) {
+      item.hidden = !compatibleSide(meridian) || (query.full ? score < 0 : !activeChannels.has(meridian.id));
       if (!item.hidden) matches++;
       button.setAttribute('aria-pressed', String(selection?.id === id));
       dot.style.setProperty('--channel-color', channelColors.get(meridian.id));
@@ -135,6 +144,7 @@ export function setupMeridianPanel(channels, onChange, { focusPoint, corrections
     if (positions.has(displaySide)) focusSide.value = displaySide;
     get('detail-source').href = source.url;
     get('detail-source').textContent = source.title;
+    details.showEvidence(id);
     update();
   }
 
@@ -172,14 +182,17 @@ export function setupMeridianPanel(channels, onChange, { focusPoint, corrections
       button.type = 'button';
       const dot = swatch(meridian.color);
       button.append(dot, `${point.id} · ${point.name_zh_tw}`);
-      button.addEventListener('click', () => select({ id: point.id }));
+      button.addEventListener('click', () => {
+        channelOptions.get(meridian.id).checkbox.checked = true;
+        select({ id: point.id });
+      });
       item.append(button);
       list.append(item);
-      const terms = normalize([point.id, point.name_zh_tw, point.pinyin, ...(point.aliases ?? [])].join(' '));
+      const searchIndex = indexPoint(point, meridian);
       const positions = new Map(placements.filter(({ point_id }) => point_id === point.id)
         .map(({ side, position }) => [side, position]));
       const source = point.location_text ? locationSource ?? indexSource : indexSource;
-      buttons.set(point.id, { item, button, dot, point, meridian, source, positions, terms,
+      buttons.set(point.id, { item, button, dot, point, meridian, source, positions, searchIndex,
         unavailableReason: unavailable[point.id] });
     }
   }

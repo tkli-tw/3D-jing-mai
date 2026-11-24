@@ -13,6 +13,7 @@ export function setupPointReview({ corrections, getTarget, onChange, nudge }) {
     const target = getTarget();
     const key = target && `${target.id}:${target.side}`;
     get('review-toggle').hidden = !target;
+    get('review-unavailable').hidden = Boolean(target);
     controls.hidden = !target || !toggle.checked;
     const record = target && corrections.get(target.id, target.side);
     if (key !== activeKey) {
@@ -80,5 +81,11 @@ export function setupPointReview({ corrections, getTarget, onChange, nudge }) {
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   });
 
-  return { refresh, handleSurfacePick };
+  return {
+    refresh, handleSurfacePick,
+    deactivate() {
+      toggle.checked = false;
+      refresh();
+    },
+  };
 }

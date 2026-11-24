@@ -44,7 +44,7 @@
           <fieldset id="point-settings" disabled>
             <div class="point-search">
               <label for="point-search">搜尋穴位</label>
-              <input id="point-search" type="search" placeholder="穴名、代碼或拼音" autocomplete="off">
+              <input id="point-search" type="search" placeholder="例如：足三里、胃經、睡不好" autocomplete="off">
             </div>
             <ul id="point-results" class="point-results" aria-label="穴位搜尋結果"></ul>
             <p id="point-empty" role="status" hidden>沒有符合的穴位。</p>
@@ -56,40 +56,64 @@
         </section>
       </div>
       <aside class="settings" aria-label="檢視設定">
-        <section class="details" aria-labelledby="details-title" aria-live="polite">
+        <section class="details" aria-labelledby="details-title">
           <h2 id="details-title">穴位資訊</h2>
           <p class="muted" id="details-empty">從清單或模型選取穴位。</p>
           <div id="point-details" hidden>
-            <p class="detail-heading" id="detail-name"></p>
-            <p class="muted" id="detail-meta"></p>
-            <p class="muted location-caption">穴位位置摘要 · 待校對</p>
-            <p id="detail-location"></p>
-            <p class="placement-note" id="detail-placement"></p>
+            <div aria-live="polite">
+              <p class="detail-heading" id="detail-name"></p>
+              <p class="muted" id="detail-meta"></p>
+            </div>
+            <div class="detail-tabs" role="tablist" aria-label="穴位資訊分類">
+              <button type="button" role="tab" id="tab-location" aria-controls="panel-location" aria-selected="true">定位</button>
+              <button type="button" role="tab" id="tab-evidence" aria-controls="panel-evidence" aria-selected="false" tabindex="-1">用途與研究</button>
+              <button type="button" role="tab" id="tab-review" aria-controls="panel-review" aria-selected="false" tabindex="-1">校對</button>
+            </div>
             <div class="point-focus" id="point-focus" hidden>
               <select id="focus-side" aria-label="穴位側別" hidden></select>
               <button type="button" id="focus-point">移到穴位</button>
             </div>
-            <label class="toggle review-toggle" id="review-toggle" hidden>
-              <input type="checkbox" id="review-enabled"> 簡易校對模式
-            </label>
-            <div id="review-controls" hidden>
-              <p class="muted">點皮膚重新放置，或用方向按鈕沿畫面微調。</p>
-              <div class="review-nudges" aria-label="沿畫面微調穴位">
-                <button type="button" data-nudge="-1,0" aria-label="往左微調">左</button>
-                <button type="button" data-nudge="0,1" aria-label="往上微調">上</button>
-                <button type="button" data-nudge="0,-1" aria-label="往下微調">下</button>
-                <button type="button" data-nudge="1,0" aria-label="往右微調">右</button>
-              </div>
-              <label for="review-note">參考地標或備註</label>
-              <textarea id="review-note" rows="2" maxlength="500"></textarea>
-              <div class="point-focus">
-                <button type="button" id="review-save">儲存備註</button>
-                <button type="button" id="review-reset">還原此點</button>
-              </div>
-              <button type="button" id="review-export">匯出校對 JSON</button>
-              <p class="muted" id="review-status" role="status"></p>
+            <div id="panel-location" role="tabpanel" aria-labelledby="tab-location" tabindex="0">
+              <p class="muted location-caption">穴位位置摘要 · 待校對</p>
+              <p id="detail-location"></p>
+              <p class="placement-note" id="detail-placement"></p>
+              <a id="detail-source" target="_blank" rel="noopener noreferrer"></a>
             </div>
-            <a id="detail-source" target="_blank" rel="noopener noreferrer"></a>
+            <div id="panel-evidence" role="tabpanel" aria-labelledby="tab-evidence" tabindex="0" hidden>
+              <section aria-labelledby="traditional-heading">
+                <h3 id="traditional-heading">傳統用途</h3>
+                <div id="detail-traditional"></div>
+                <p class="muted location-caption">傳統作用及索引詞反映文獻記載。臨床研究結果另列於下節。</p>
+              </section>
+              <section aria-labelledby="research-heading">
+                <h3 id="research-heading">現代研究</h3>
+                <div id="detail-evidence"></div>
+              </section>
+              <p class="muted location-caption">相關醫療效果僅供參考。實際的醫療行為請謹遵醫囑。</p>
+            </div>
+            <div id="panel-review" role="tabpanel" aria-labelledby="tab-review" tabindex="0" hidden>
+              <p class="muted" id="review-unavailable" hidden>此穴位尚無可校對的 3D 標記。</p>
+              <label class="toggle review-toggle" id="review-toggle" hidden>
+                <input type="checkbox" id="review-enabled"> 簡易校對模式
+              </label>
+              <div id="review-controls" hidden>
+                <p class="muted">點皮膚重新放置，或用方向按鈕沿畫面微調。</p>
+                <div class="review-nudges" aria-label="沿畫面微調穴位">
+                  <button type="button" data-nudge="-1,0" aria-label="往左微調">左</button>
+                  <button type="button" data-nudge="0,1" aria-label="往上微調">上</button>
+                  <button type="button" data-nudge="0,-1" aria-label="往下微調">下</button>
+                  <button type="button" data-nudge="1,0" aria-label="往右微調">右</button>
+                </div>
+                <label for="review-note">參考地標或備註</label>
+                <textarea id="review-note" rows="2" maxlength="500"></textarea>
+                <div class="point-focus">
+                  <button type="button" id="review-save">儲存備註</button>
+                  <button type="button" id="review-reset">還原此點</button>
+                </div>
+                <button type="button" id="review-export">匯出校對 JSON</button>
+                <p class="muted" id="review-status" role="status"></p>
+              </div>
+            </div>
           </div>
         </section>
         <fieldset id="settings" disabled>
