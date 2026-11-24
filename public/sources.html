@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>資料來源與授權 · 3D 人體經脈圖譜</title>
+    <style>
+      :root { color-scheme: dark; background: #101a21; color: #e0edf0; font: 100%/1.65 system-ui, sans-serif; }
+      main { max-width: 46rem; margin: 0 auto; padding: 1.5rem clamp(1rem, 5vw, 2.5rem) 3rem; }
+      h1 { font-size: clamp(1.8rem, 5vw, 2.5rem); }
+      h2 { font-size: 1.25rem; margin-top: 1.75rem; }
+      a { color: #8edbcf; }
+      a:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+      li + li { margin-top: .4rem; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <nav aria-label="頁面導覽"><a href="./">返回 3D 人體經脈圖譜</a></nav>
+      <h1>資料來源與授權</h1>
+      <p>本圖譜供學習與人體空間視覺化使用。3D 穴位座標與經脈線為示意，傳統用途與現代研究分開呈現。若有症狀或治療疑問，請諮詢合格醫療人員。</p>
+
+      <h2>人體模型</h2>
+      <p>男性模型由 MervinR07 的 Open Anatomy 3D（v0.1.0）改編自 BodyParts3D 4.0，© The Database Center for Life Science。模型採 CC BY 4.0。本圖譜使用原始 GLB，顯示時調整皮膚顏色與透明度並隱藏其他解剖層。
+        <a href="https://github.com/MervinR07/open-anatomy-3d/blob/c050aa7b1bc56ceed668199b01ea017341928d7b/ATTRIBUTION.md">Open Anatomy 3D 原始署名</a> ·
+        <a href="https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/">BodyParts3D</a> ·
+        <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+      </p>
+
+      <h2>穴位示意座標</h2>
+      <p>部分座標改編自 JIC tcm-3d（© 2026 ashemag、JIC contributors），依目前模型的皮膚重新貼合，部分穴位另依地標調整。JIC 應用資料採 MIT，其底層 BodyParts3D 素材採 CC BY 4.0。
+        <a href="https://github.com/JICio/tcm-3d/blob/e8b9ad1c17e67a25e94406100e3fb5c296c24f7a/app/meridian-surface.json">JIC 原始示意資料</a> ·
+        <a href="./jic-coordinate-license.txt">JIC 版權與授權通知</a>
+      </p>
+
+      <h2>穴位名稱與定位</h2>
+      <p>穴位名稱、代碼與繁中定位摘要參考 WHO 的命名提案與定位標準。肺經定位也參考世界針灸學會聯合會刊載的《經穴部位》。3D 座標依模型另外整理。
+        <a href="https://apps.who.int/iris/bitstream/handle/10665/40001/9241544171_eng.pdf">WHO 命名提案（1991）</a> ·
+        <a href="https://iris.who.int/bitstream/handle/10665/353407/9789290613831-eng.pdf">WHO 西太平洋區定位標準（2008）</a> ·
+        <a href="https://www.wfas.org.cn/a47122.html">《經穴部位》第 3.1 節</a>
+      </p>
+
+      <h2>傳統用途與現代研究</h2>
+      <p>多數傳統作用與文獻索引詞摘選自 Arthur S. Ferreira 與 Alexandre B. Luiz（2013）的葡文補充試算表，採 CC BY 2.0。本圖譜摘選相關欄位、轉譯為繁體中文，並統一穴位代碼。
+        <a href="https://doi.org/10.1186/1749-8546-8-24">原論文與補充附表</a> ·
+        <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a>
+      </p>
+      <p>部分傳統用途參考醫院衛教及政府教材，乳中參考專業團體的穴位手冊。每筆摘要的直接來源也可從圖譜的「用途與研究」頁籤查看。</p>
+      <ul>
+        <li><a href="https://www-ws.gov.taipei/001/Upload/519/relfile/23395/111396/13e1f6ce-639b-4899-aba5-f8060c5e779e.pdf">臺北市立聯合醫院林森中醫院區 · 癌症中西醫照護</a></li>
+        <li><a href="https://department.cych.org.tw/upload/files/620/%E6%B6%88%E5%8C%96%E6%80%A7%E6%BD%B0%E7%98%8D%E4%B9%8B%E4%B8%AD%E9%86%AB%E7%99%82%E6%B3%95%E4%BF%AE-%E4%B8%AD%E9%86%AB.pdf">嘉義基督教醫院 · 消化性潰瘍之中醫療法</a></li>
+        <li><a href="https://www.kmuh.org.tw/www/kmcj/data/11009/21.htm">高雄醫學大學附設中和紀念醫院 · 穴位按摩保健</a></li>
+        <li><a href="https://www.taco.gov.hk/t/tc_chi/whocc/files/20250411f.pdf">香港衞生署控煙酒辦公室 · 中醫針灸戒煙計劃教材</a></li>
+        <li><a href="https://www.aacp.org.uk/assets/ckfinder_library/files/Point%20Location%20Manual.pdf">AACP · Acupuncture Point Reference Manual</a></li>
+      </ul>
+      <p>現代研究以繁中摘要呈現研究情境、結果與限制。原始出版品依各出版者的權利條款。
+        <a href="https://doi.org/10.1002/14651858.CD003281.pub5">內關 · Cochrane 系統性回顧</a> ·
+        <a href="https://pubmed.ncbi.nlm.nih.gov/36632716/">合谷 · Journal of Renal Care 隨機對照試驗</a>
+      </p>
+    </main>
+  </body>
+</html>

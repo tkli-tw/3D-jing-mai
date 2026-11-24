@@ -104,6 +104,7 @@ input[type="search"], select {
 .color-control { display: grid; gap: .35rem; margin-bottom: 1rem; }
 .point-picker { padding: .75rem; }
 .point-search { display: flex; align-items: center; flex-wrap: wrap; gap: .4rem .75rem; }
+.search-note { margin: .7rem 0 0; color: #bbced2; font-size: .875rem; line-height: 1.5; }
 input[type="search"] { width: min(100%, 16rem); }
 .point-results {
   display: flex;

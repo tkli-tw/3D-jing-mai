@@ -44,10 +44,11 @@
           <fieldset id="point-settings" disabled>
             <div class="point-search">
               <label for="point-search">搜尋穴位</label>
-              <input id="point-search" type="search" placeholder="例如：足三里、胃經、睡不好" autocomplete="off">
+              <input id="point-search" type="search" placeholder="例如：足三里、胃經、睡不好" autocomplete="off" aria-describedby="point-search-note">
             </div>
             <ul id="point-results" class="point-results" aria-label="穴位搜尋結果"></ul>
             <p id="point-empty" role="status" hidden>沒有符合的穴位。</p>
+            <p class="search-note" id="point-search-note">搜尋結果依穴位名稱與文獻關鍵字等文字關聯排序。3D 穴位位置為學習示意。若有症狀或治療疑問，請諮詢合格醫療人員。</p>
           </fieldset>
         </section>
         <section class="viewport" aria-label="3D 人體模型">
@@ -142,11 +143,7 @@
     </main>
     <footer>
       <p>本圖譜供人體空間視覺化與學習使用。經脈線為傳統經脈的體表示意。</p>
-      <p>男性模型由 <a href="https://github.com/MervinR07/open-anatomy-3d">Open Anatomy 3D</a> 改編自
-        <a href="https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/">BodyParts3D</a> © The Database Center for Life Science。
-        模型採 <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>。</p>
-      <p>部分穴位示意位置改編自 <a href="https://github.com/JICio/tcm-3d">JIC tcm-3d</a>，並重新貼合本模型。
-        <a href="./jic-coordinate-license.txt">座標資料授權</a></p>
+      <p><a href="./sources.html">資料來源與授權</a></p>
     </footer>
     <script type="module" src="/src/main.js"></script>
   </body>
